@@ -6,27 +6,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.betuluyar.hrms.business.abstracts.JobTitleService;
-import com.betuluyar.hrms.dataAccess.abstracts.JobTitleDao;
+import com.betuluyar.hrms.core.utilities.results.DataResult;
+import com.betuluyar.hrms.core.utilities.results.SuccessDataResult;
+import com.betuluyar.hrms.dataAccess.abstracts.JobTitleRepository;
 import com.betuluyar.hrms.entities.concretes.JobTitle;
 
 @Service
 public class JobTitleManager implements JobTitleService{
 	
-	private JobTitleDao jobTitleDao;
+	private JobTitleRepository jobTitleRepository;
 	
 
 	@Autowired
-	public JobTitleManager(JobTitleDao jobTitleDao) {
+	public JobTitleManager(JobTitleRepository jobTitleRepository) {
 		super();
-		this.jobTitleDao = jobTitleDao;
+		this.jobTitleRepository = jobTitleRepository;
 	}
 
 
 
 	@Override
-	public List<JobTitle> getAll() {
+	public DataResult<List<JobTitle>> getAll() {
 		
-		return this.jobTitleDao.findAll();
+		return new SuccessDataResult<List<JobTitle>>(this.jobTitleRepository.findAll(), "İş pozisyonları listelendi.");
+				
 	
 	}
 
