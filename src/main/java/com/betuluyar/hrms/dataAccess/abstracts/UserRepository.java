@@ -8,4 +8,5 @@ import com.betuluyar.hrms.entities.concretes.User;
 @NoRepositoryBean
 public interface UserRepository extends JpaRepository<User, Long> {
 
+	
 }

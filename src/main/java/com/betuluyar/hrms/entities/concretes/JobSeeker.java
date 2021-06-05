@@ -1,12 +1,26 @@
 package com.betuluyar.hrms.entities.concretes;
 
+import java.util.Date;
+
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="job_seeker")
+@Table(name="jobseekers", uniqueConstraints={@UniqueConstraint(columnNames={"identity_number"})})
+@Data
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+@AllArgsConstructor
 public class JobSeeker extends User {
+	
 	
 	@Column(name="first_name")
 	private String firstName;
@@ -18,42 +32,8 @@ public class JobSeeker extends User {
 	private String identityNumber;
 	
 	@Column(name="birth_date")
-	private int birthDate;
+	private Date birthDate;
 	
-	public JobSeeker() {
-		
-	}
-	
-	public JobSeeker(String firstName, String lastName, String identityNumber, int birthDate) {
-		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.identityNumber = identityNumber;
-		this.birthDate = birthDate;
-	}
-	public String getFirstName() {
-		return firstName;
-	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-	public String getIdentityNumber() {
-		return identityNumber;
-	}
-	public void setIdentityNumber(String identityNumber) {
-		this.identityNumber = identityNumber;
-	}
-	public int getBirthDate() {
-		return birthDate;
-	}
-	public void setBirthDate(int birthDate) {
-		this.birthDate = birthDate;
-	}
+
 
 }

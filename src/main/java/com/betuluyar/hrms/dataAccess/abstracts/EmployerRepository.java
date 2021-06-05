@@ -8,4 +8,5 @@ import com.betuluyar.hrms.entities.concretes.Employer;
 @Repository
 public interface EmployerRepository extends JpaRepository<Employer, Long>{
 
+	Employer getByEmail(String email);
 }

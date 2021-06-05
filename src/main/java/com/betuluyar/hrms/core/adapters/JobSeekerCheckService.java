@@ -2,10 +2,13 @@ package com.betuluyar.hrms.core.adapters;
 
 
 
-import com.betuluyar.hrms.entities.concretes.JobSeeker;
+import java.util.Date;
+
+import com.betuluyar.hrms.core.utilities.results.Result;
+
 
 
 public interface JobSeekerCheckService {
 
-	boolean checkİfRealPerson(JobSeeker jobSeeker);
+	Result checkİfRealPerson(String tc, Date birthDate);
 }

@@ -4,8 +4,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 @Entity
-@Table(name="employer")
+@Table(name="employers")
+@Data
+@EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+@AllArgsConstructor
 public class Employer extends User{
 
 	@Column(name="company_name")
@@ -17,39 +26,6 @@ public class Employer extends User{
 	@Column(name="web_address")
 	private String webAddress;
 	
-	public Employer() {
-		
-	}
-
-	public Employer(String companyName, String phoneNumber, String webAddress) {
-		super();
-		this.companyName = companyName;
-		this.phoneNumber = phoneNumber;
-		this.webAddress = webAddress;
-	}
-
-	public String getCompanyName() {
-		return companyName;
-	}
-
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	public String getWebAddress() {
-		return webAddress;
-	}
-
-	public void setWebAddress(String webAddress) {
-		this.webAddress = webAddress;
-	}
+	
 	
 }

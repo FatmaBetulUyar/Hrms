@@ -1,7 +1,15 @@
-/*
- * package com.betuluyar.hrms.core.adapters;
- * 
- * import java.rmi.RemoteException; import java.util.Locale;
+
+  package com.betuluyar.hrms.core.adapters;
+
+import java.util.Date;
+
+import org.springframework.stereotype.Service;
+
+import com.betuluyar.hrms.core.utilities.results.ErrorResult;
+import com.betuluyar.hrms.core.utilities.results.Result;
+import com.betuluyar.hrms.core.utilities.results.SuccessResult;
+
+/* import java.rmi.RemoteException; import java.util.Locale;
  * 
  * 
  * import org.springframework.stereotype.Service;
@@ -25,3 +33,14 @@
  * 
  * }
  */
+  @Service
+  public class MernisServiceAdapter implements JobSeekerCheckService{
+
+	@Override
+	public Result checkİfRealPerson(String tc, Date birthDate) {
+		if(tc==null ||birthDate==null) {
+			return new ErrorResult("Kimlik doğrulaması gerçekleştirilemedi");
+		}
+		return new SuccessResult("Kimlik doğrulaması başarılı");
+	}
+}

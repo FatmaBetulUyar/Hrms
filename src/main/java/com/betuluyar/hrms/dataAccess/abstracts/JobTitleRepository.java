@@ -7,5 +7,6 @@ import com.betuluyar.hrms.entities.concretes.JobTitle;
 
 @Repository
 public interface JobTitleRepository extends JpaRepository<JobTitle, Integer>{
-
+  
+	JobTitle getByTitleName(String titleName);
 }
