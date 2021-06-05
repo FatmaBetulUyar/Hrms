@@ -7,7 +7,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.betuluyar.hrms.business.abstracts.EmployerService;
+import com.betuluyar.hrms.business.abstracts.VerificationCodeService;
 import com.betuluyar.hrms.core.business.utilities.BusinessRules;
+import com.betuluyar.hrms.core.utilities.helpers.CodeGenerator;
 import com.betuluyar.hrms.core.utilities.results.DataResult;
 import com.betuluyar.hrms.core.utilities.results.ErrorResult;
 import com.betuluyar.hrms.core.utilities.results.Result;
@@ -15,6 +17,8 @@ import com.betuluyar.hrms.core.utilities.results.SuccessDataResult;
 import com.betuluyar.hrms.core.utilities.results.SuccessResult;
 import com.betuluyar.hrms.dataAccess.abstracts.EmployerRepository;
 import com.betuluyar.hrms.entities.concretes.Employer;
+import com.betuluyar.hrms.entities.concretes.SystemPersonel;
+import com.betuluyar.hrms.entities.concretes.VerificationCode;
 import com.betuluyar.hrms.entities.concretes.dto.EmployerForRegisterDto;
 
 
@@ -23,14 +27,19 @@ public class EmployerManager implements EmployerService{
 	
 	private EmployerRepository employerRepository;
 	private EmployerService employerService;
+	private VerificationCodeService verificationCodeService;
+	private CodeGenerator codeGenerator;
 	
 	
 	@Autowired
 	@Lazy
-	public EmployerManager(EmployerRepository employerRepository,EmployerService employerService) {
+	public EmployerManager(EmployerRepository employerRepository,EmployerService employerService, VerificationCodeService verificationCodeService,
+			CodeGenerator codeGenerator	) {
 		super();
 		this.employerRepository = employerRepository;
 		this.employerService=employerService;
+		this.codeGenerator=codeGenerator;
+		this.verificationCodeService=verificationCodeService;
 	}
 
 	@Override
@@ -56,7 +65,9 @@ public class EmployerManager implements EmployerService{
 		if (businessRulesforEmployer != null) return businessRulesforEmployer;
 			
 		
-		
+		String verificationCode=codeGenerator.CodeGenerate();
+		verificationCodeRecord(verificationCode, employer.getId(), employer.getEmail());
+		verificationBySystemPersonels();
 		this.employerRepository.save(employer);
 		return new SuccessResult("İş veren eklendi");
 	}
@@ -68,7 +79,7 @@ public class EmployerManager implements EmployerService{
 	
 	private Result isMailAndWebsiteDomainSame(String email, String webAdress){
 		String[] emailSplit=email.split("@");
-		if(!emailSplit[1].equals(webAdress)) {
+		if(!webAdress.contains(emailSplit[1])) {
 			return new ErrorResult("Web siteniz ile aynı domaine sahip email adresiniz olmalıdır");
 		}
 		
@@ -87,6 +98,16 @@ public class EmployerManager implements EmployerService{
 			return new ErrorResult("Bu email ile başka bir kullanıcı mevcut");
 		}
 		return new SuccessResult();
+	}
+	
+	private void verificationCodeRecord(String code, long id, String email) {
+		VerificationCode verificationCode=new VerificationCode(id,code);
+		verificationCodeService.add(verificationCode);
+		verificationCode.setConfirmed(true);
+		System.out.print(email+" adresine email doğrulama kodu gönderildi!");
+	} 
+	private void verificationBySystemPersonels() {
+		System.out.print(" Sistem personeli tarafından doğrulama işlemi gerçekleştirildi");
 	}
 
 	

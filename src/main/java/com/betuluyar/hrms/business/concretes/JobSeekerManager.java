@@ -7,8 +7,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.betuluyar.hrms.business.abstracts.JobSeekerService;
+import com.betuluyar.hrms.business.abstracts.VerificationCodeService;
 import com.betuluyar.hrms.core.adapters.JobSeekerCheckService;
 import com.betuluyar.hrms.core.business.utilities.BusinessRules;
+import com.betuluyar.hrms.core.utilities.helpers.CodeGenerator;
 import com.betuluyar.hrms.core.utilities.results.DataResult;
 import com.betuluyar.hrms.core.utilities.results.ErrorResult;
 import com.betuluyar.hrms.core.utilities.results.Result;
@@ -17,6 +19,7 @@ import com.betuluyar.hrms.core.utilities.results.SuccessResult;
 import com.betuluyar.hrms.dataAccess.abstracts.JobSeekerRepository;
 import com.betuluyar.hrms.dataAccess.abstracts.UserRepository;
 import com.betuluyar.hrms.entities.concretes.JobSeeker;
+import com.betuluyar.hrms.entities.concretes.VerificationCode;
 import com.betuluyar.hrms.entities.concretes.dto.JobSeekerForRegisterDto;
 
 
@@ -28,14 +31,21 @@ public class JobSeekerManager implements JobSeekerService{
 	 private JobSeekerRepository jobSeekerRepository;
 	 private JobSeekerCheckService jobSeekerCheckService; 
 	 private JobSeekerService jobSeekerService;
+	 private VerificationCodeService verificationCodeService;
+	 private CodeGenerator codeGenerator;
+	 
 
 	@Autowired
 	@Lazy
-	public JobSeekerManager(JobSeekerRepository jobSeekerRepository,JobSeekerCheckService jobSeekerCheckService,JobSeekerService jobSeekerService) {
+	public JobSeekerManager(JobSeekerRepository jobSeekerRepository,JobSeekerCheckService jobSeekerCheckService,JobSeekerService jobSeekerService,
+			VerificationCodeService verificationCodeService,CodeGenerator codeGenerator) {
 		super();
 		this.jobSeekerRepository = jobSeekerRepository;
 		this.jobSeekerCheckService=jobSeekerCheckService; 
 		this.jobSeekerService=jobSeekerService;
+		this.verificationCodeService=verificationCodeService;
+		this.codeGenerator=codeGenerator;
+		
 		
 	}
 
@@ -58,10 +68,12 @@ public class JobSeekerManager implements JobSeekerService{
 						);
 				if (businessRules != null) return businessRules;
 				
+				String verificationCode=this.codeGenerator.CodeGenerate();
+				verificationCodeRecord(verificationCode,entity.getId(),entity.getEmail());
 				
-
+				
 		 this.jobSeekerRepository.save(entity);
-			return new SuccessResult("İş arayan kaydı eklendi. Emailinize gelen doğrulama koduyla hesabınızı doğrulayın. ");
+			return new SuccessResult("İş arayan kaydı eklendi! ");
 	}
 
 
@@ -100,5 +112,11 @@ public class JobSeekerManager implements JobSeekerService{
 		return new SuccessResult();
 	}
 	 
+	private void verificationCodeRecord(String code, long id, String email) {
+		VerificationCode verificationCode=new VerificationCode(id,code);
+		verificationCodeService.add(verificationCode);
+		verificationCode.setConfirmed(true);
+		System.out.print(email+" adresine email doğrulama kodu gönderildi!");
+	}
 	
 }
