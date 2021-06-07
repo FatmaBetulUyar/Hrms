@@ -1,8 +1,11 @@
 package com.betuluyar.hrms.api.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betuluyar.hrms.business.abstracts.JobAdvertisementService;
+import com.betuluyar.hrms.core.utilities.results.DataResult;
 import com.betuluyar.hrms.core.utilities.results.Result;
 import com.betuluyar.hrms.entities.concretes.JobAdvertisement;
 import com.betuluyar.hrms.entities.concretes.dto.JobAdversementDto;
@@ -27,10 +31,19 @@ public class JobAdvertisementsController {
 		this.jobAdvertisementService = jobAdvertisementService;
 	}
 
-
-
 	@PostMapping("/addJobAdvertisement")
 	public Result addJobAdvertisement(@Valid @RequestBody JobAdversementDto dto) {
 		return this.jobAdvertisementService.addJobAdvertisement(dto);
+	}
+	
+	@GetMapping("/getall")
+	public DataResult<List<JobAdvertisement>> getAll(){
+		return this.jobAdvertisementService.getAll();
+		
+	}
+	
+	@GetMapping("/getallOrderByReleaseDate")
+	public DataResult<List<JobAdvertisement>> getAllOrderByReleaseDate(){
+		return this.jobAdvertisementService.getAllOrderByReleaseDate();
 	}
 }
