@@ -47,6 +47,13 @@ public class JobTitleManager implements JobTitleService{
 	}
 
 
+	@Override
+	public DataResult<JobTitle> getById(int id) {
+		
+		return new SuccessDataResult<JobTitle>(this.jobTitleRepository.getById(id));
+	}
+
+
 	
 
 

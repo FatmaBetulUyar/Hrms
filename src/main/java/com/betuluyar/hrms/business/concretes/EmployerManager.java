@@ -16,7 +16,9 @@ import com.betuluyar.hrms.core.utilities.results.Result;
 import com.betuluyar.hrms.core.utilities.results.SuccessDataResult;
 import com.betuluyar.hrms.core.utilities.results.SuccessResult;
 import com.betuluyar.hrms.dataAccess.abstracts.EmployerRepository;
+import com.betuluyar.hrms.dataAccess.abstracts.JobAdvertisementRepository;
 import com.betuluyar.hrms.entities.concretes.Employer;
+import com.betuluyar.hrms.entities.concretes.JobAdvertisement;
 import com.betuluyar.hrms.entities.concretes.SystemPersonel;
 import com.betuluyar.hrms.entities.concretes.VerificationCode;
 import com.betuluyar.hrms.entities.concretes.dto.EmployerForRegisterDto;
@@ -29,17 +31,19 @@ public class EmployerManager implements EmployerService{
 	private EmployerService employerService;
 	private VerificationCodeService verificationCodeService;
 	private CodeGenerator codeGenerator;
+	private JobAdvertisementRepository jobAdvertisementRepository;
 	
 	
 	@Autowired
 	@Lazy
 	public EmployerManager(EmployerRepository employerRepository,EmployerService employerService, VerificationCodeService verificationCodeService,
-			CodeGenerator codeGenerator	) {
+			CodeGenerator codeGenerator,JobAdvertisementRepository jobAdvertisementRepository	) {
 		super();
 		this.employerRepository = employerRepository;
 		this.employerService=employerService;
 		this.codeGenerator=codeGenerator;
 		this.verificationCodeService=verificationCodeService;
+		this.jobAdvertisementRepository=this.jobAdvertisementRepository;
 	}
 
 	@Override
@@ -109,6 +113,14 @@ public class EmployerManager implements EmployerService{
 	private void verificationBySystemPersonels() {
 		System.out.print(" Sistem personeli tarafından doğrulama işlemi gerçekleştirildi");
 	}
+
+	@Override
+	public DataResult<Employer> getById(Long id) {
+		
+		return new SuccessDataResult<Employer>(this.employerRepository.getById(id));
+	}
+
+	
 
 	
 }
