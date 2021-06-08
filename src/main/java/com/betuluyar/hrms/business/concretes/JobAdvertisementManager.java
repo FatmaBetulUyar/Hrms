@@ -11,14 +11,12 @@ import com.betuluyar.hrms.business.abstracts.EmployerService;
 import com.betuluyar.hrms.business.abstracts.JobAdvertisementService;
 import com.betuluyar.hrms.business.abstracts.JobTitleService;
 import com.betuluyar.hrms.core.utilities.results.DataResult;
-import com.betuluyar.hrms.core.utilities.results.ErrorResult;
 import com.betuluyar.hrms.core.utilities.results.Result;
 import com.betuluyar.hrms.core.utilities.results.SuccessDataResult;
 import com.betuluyar.hrms.core.utilities.results.SuccessResult;
-import com.betuluyar.hrms.dataAccess.abstracts.CityRepository;
 import com.betuluyar.hrms.dataAccess.abstracts.JobAdvertisementRepository;
 import com.betuluyar.hrms.entities.concretes.JobAdvertisement;
-import com.betuluyar.hrms.entities.concretes.JobTitle;
+
 
 @Service
 public class JobAdvertisementManager implements JobAdvertisementService {
@@ -75,8 +73,27 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 	}
 
 
-	
+	@Override
+	public DataResult<List<JobAdvertisement>> getAllActiveJobAdvertisements() {
+		return new SuccessDataResult<List<JobAdvertisement>>(this.jobAdvertisementRepository.getByIsActive(true), "Akfif iş ilanları listelendi");
+	}
 
+
+	@Override
+	public DataResult<List<JobAdvertisement>> getallActiveJobAdvertisementsByEmployer(long employerId) {
+
+		return new SuccessDataResult<List<JobAdvertisement>>(this.jobAdvertisementRepository.getByIsActiveAndEmployer(true, employerId), "Şirkete ait aktif iş ilanları listelendi.");
+	}
+
+
+	
+	@Override
+	public Result makePassiveJobAdvertisement(Long id,Long employerId) {
+		JobAdvertisement jobAdvertisement=this.jobAdvertisementRepository.findByIdAndEmployer_Id(id, employerId);
+		jobAdvertisement.setActive(!jobAdvertisement.isActive());
+		this.jobAdvertisementRepository.save(jobAdvertisement);
+		return new SuccessResult(employerId+" id numarasına sahip şirket tarafından "+ id+" id li iş ilanı" +(jobAdvertisement.isActive() ? "aktif":"pasif"+ " hale getirildi."));
+	}
 
 	
 

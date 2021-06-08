@@ -11,4 +11,7 @@ public interface JobAdvertisementService {
 	Result addJobAdvertisement(JobAdversementDto jobAdvertisement);
 	DataResult<List<JobAdvertisement>> getAll();
 	DataResult<List<JobAdvertisement>> getAllOrderByReleaseDate();
+	DataResult<List<JobAdvertisement>> getAllActiveJobAdvertisements();
+	DataResult<List<JobAdvertisement>> getallActiveJobAdvertisementsByEmployer(long employerId);
+	Result makePassiveJobAdvertisement(Long id, Long employerId);
 }

@@ -15,4 +15,5 @@ public interface EmployerService {
 	DataResult<Employer> getByEmail(String email);
 	DataResult<Employer> getById(Long id);
 	
+	
 }

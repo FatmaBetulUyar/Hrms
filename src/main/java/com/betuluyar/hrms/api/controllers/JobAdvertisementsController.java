@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,5 +46,20 @@ public class JobAdvertisementsController {
 	@GetMapping("/getallOrderByReleaseDate")
 	public DataResult<List<JobAdvertisement>> getAllOrderByReleaseDate(){
 		return this.jobAdvertisementService.getAllOrderByReleaseDate();
+	}
+	
+	@GetMapping("/getallActiveJobAdvertisements")
+	public DataResult<List<JobAdvertisement>> getAllActiveJobAdvertisements(){
+		return this.jobAdvertisementService.getAllActiveJobAdvertisements();
+	}
+	
+	@GetMapping("/getallActiveJobAdvertisementsByEmployer")
+	DataResult<List<JobAdvertisement>> getallActiveJobAdvertisementsByEmployer(@RequestParam long employerId){
+		return this.jobAdvertisementService.getallActiveJobAdvertisementsByEmployer(employerId);
+	}
+	
+	@PutMapping("/makePassiveJobAdvertisementByEmployer")
+	public Result makePassiveJobAdvertisement( Long id,Long employerId) {
+		return this.jobAdvertisementService.makePassiveJobAdvertisement(id, employerId);
 	}
 }
