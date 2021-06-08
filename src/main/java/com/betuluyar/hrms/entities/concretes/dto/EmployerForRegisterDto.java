@@ -12,22 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EmployerForRegisterDto {
 
-	@NotBlank(message="Şirket adı boş bırakılamaz!")
+	
 	private String companyName;
-	
-	@NotBlank(message="Web sitesi boş bırakılamaz!")
 	private String webAddress;
-	
-	@NotBlank(message="Email boş bırakılamaz!")
 	private String emailWithSameDomain;
-	
-
-	@NotBlank(message="Telefon numarası boş bırakılamaz!")
 	private String phoneNumber;
-	
-	@NotBlank(message="Şifre boş bırakılamaz!")
 	private String password;
-	
-	@NotBlank(message="Şifre tekrarı boş bırakılamaz!")
 	private String verifyPassword;
 }

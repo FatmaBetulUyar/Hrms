@@ -9,5 +9,5 @@ import com.betuluyar.hrms.entities.concretes.JobTitle;
 public interface JobTitleRepository extends JpaRepository<JobTitle, Integer>{
   
 	JobTitle getByTitleName(String titleName);
-	JobTitle getById(int id);
+	JobTitle getById(Long id);
 }

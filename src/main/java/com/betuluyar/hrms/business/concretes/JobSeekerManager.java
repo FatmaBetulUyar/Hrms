@@ -1,5 +1,6 @@
 package com.betuluyar.hrms.business.concretes;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,9 @@ public class JobSeekerManager implements JobSeekerService{
 				Result businessRules=BusinessRules.run(
 						isUserExistWithEmail(entity.getEmail()),
 						isUserExistWithNationalityId(entity.getIdentityNumber()),
-						isPasswordsMatch(jobSeekerDto.getPassword(), jobSeekerDto.getVerifyPassword())
+						isPasswordsMatch(jobSeekerDto.getPassword(), jobSeekerDto.getVerifyPassword()),
+						checkIfNull(jobSeekerDto.getFirstName(),jobSeekerDto.getLastName(), jobSeekerDto.getIdentityNumber(),jobSeekerDto.getBirthDate(),
+								jobSeekerDto.getEmail(),jobSeekerDto.getPassword(),jobSeekerDto.getVerifyPassword())
 						);
 				if (businessRules != null) return businessRules;
 				
@@ -118,5 +121,33 @@ public class JobSeekerManager implements JobSeekerService{
 		verificationCode.setConfirmed(true);
 		System.out.print(email+" adresine email doğrulama kodu gönderildi!");
 	}
+	
+
+	private Result checkIfNull(String firstName,String lastName, String identityNumber, Date birthDate,String email, String password, String verifyPassword) {
+		if(firstName==null || firstName=="") {
+			return new ErrorResult("Ad boş bırakılamaz!");
+		}
+		if(lastName==null|| lastName=="") {
+			return new ErrorResult("Soyad boş bırakılamaz!");
+		}
+		if(identityNumber==null|| identityNumber=="") {
+			return new ErrorResult("Tc no boş bırakılamaz!");
+		}
+		if(birthDate==null) {
+			return new ErrorResult("Doğum tarihi boş bırakılamaz!");
+		}
+		if(email==null || email=="") {
+			return new ErrorResult("Email boş bırakılamaz!");
+		}
+		if(password==null|| password=="") {
+			return new ErrorResult("Şifre boş bırakılamaz!");
+		}
+		if(verifyPassword==null|| verifyPassword=="") {
+			return new ErrorResult("Şifre tekrarı boş bırakılamaz!");
+		}
+		
+		return new SuccessResult();
+	}
+
 	
 }

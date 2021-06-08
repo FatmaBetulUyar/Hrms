@@ -33,7 +33,6 @@ public class JobAdvertisement {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	//@NotBlank(message = "İş tanımı boş bırakılamaz!")
 	@Column(name="job_description")
 	private String jobDescription;
 	
@@ -46,7 +45,6 @@ public class JobAdvertisement {
 	@Column(name="is_active")
 	private boolean isActive;
 	
-	//@NotBlank(message = "Açık pozisyon adedi boş bırakılamaz!")
 	@Column(name="total_jobtitle")
 	private int totalJobTitle;
 	
@@ -56,18 +54,15 @@ public class JobAdvertisement {
 	@Column(name="application_deadline")
 	private Date applicationDeadline;
 	
-	//@NotBlank(message = "İş pozisyonu seçilmesi zorunludur.")
+	
 	@ManyToOne
 	@JoinColumn(name="jobtitle_id")
 	private JobTitle jobTitle;
 	
-	//@NotBlank(message = "Şehir seçilmesi zorunludur.")
 	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="city_id")
 	private City city;
 	
-	
-	//@NotBlank(message = "Şirket seçilmesi zorunludur.")
 	@ManyToOne
 	@JoinColumn(name="employer_id")
 	private Employer employer;

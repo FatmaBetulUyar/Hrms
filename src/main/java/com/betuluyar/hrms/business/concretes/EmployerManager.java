@@ -64,7 +64,8 @@ public class EmployerManager implements EmployerService{
 		
 				isMailAndWebsiteDomainSame(employerDto.getEmailWithSameDomain(),employerDto.getWebAddress()),
 				isPasswordsMatch(employerDto.getPassword(), employerDto.getVerifyPassword()),
-				isEmployerExistWithEmail(employer.getEmail())
+				isEmployerExistWithEmail(employer.getEmail()),
+				checkIfNull(employerDto.getCompanyName(),employerDto.getWebAddress(),employerDto.getPhoneNumber(),employerDto.getEmailWithSameDomain(),employerDto.getPassword(),employerDto.getVerifyPassword())
 		);
 		if (businessRulesforEmployer != null) return businessRulesforEmployer;
 			
@@ -76,6 +77,28 @@ public class EmployerManager implements EmployerService{
 		return new SuccessResult("İş veren eklendi");
 	}
 	
+	private Result checkIfNull(String companyName, String webAddress, String phoneNumber, String emailWithSameDomain,String password, String verifyPassword) {
+		if(companyName==null || companyName=="") {
+			return new ErrorResult("Şirket adı boş bırakılamaz!");
+		}
+		if(webAddress==null || webAddress=="") {
+			return new ErrorResult("Şirket web sitesi boş bırakılamaz!");
+		}
+		if(phoneNumber==null || phoneNumber=="") {
+			return new ErrorResult("Şirket telefonu boş bırakılamaz!");
+		}
+		if(emailWithSameDomain==null || emailWithSameDomain=="") {
+			return new ErrorResult("Email boş bırakılamaz!");
+		}
+		if(password==null || password=="") {
+			return new ErrorResult("Şifre boş bırakılamaz!");
+		}
+		if(verifyPassword==null || verifyPassword=="") {
+			return new ErrorResult("Şifre tekrarı boş bırakılamaz!");
+		}
+		return null;
+	}
+
 	@Override
 	public DataResult<Employer> getByEmail(String email) {
 		return new SuccessDataResult<Employer>(this.employerRepository.getByEmail(email));

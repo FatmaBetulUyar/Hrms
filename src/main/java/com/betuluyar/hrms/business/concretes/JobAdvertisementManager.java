@@ -10,7 +10,9 @@ import com.betuluyar.hrms.business.abstracts.CityService;
 import com.betuluyar.hrms.business.abstracts.EmployerService;
 import com.betuluyar.hrms.business.abstracts.JobAdvertisementService;
 import com.betuluyar.hrms.business.abstracts.JobTitleService;
+import com.betuluyar.hrms.core.business.utilities.BusinessRules;
 import com.betuluyar.hrms.core.utilities.results.DataResult;
+import com.betuluyar.hrms.core.utilities.results.ErrorResult;
 import com.betuluyar.hrms.core.utilities.results.Result;
 import com.betuluyar.hrms.core.utilities.results.SuccessDataResult;
 import com.betuluyar.hrms.core.utilities.results.SuccessResult;
@@ -54,11 +56,21 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 		entity.setEmployer(this.employerService.getById(dto.getEmployerId()).getData());
 		entity.setJobTitle(this.jobTitleService.getById(dto.getJobTitleId()).getData());
 		
+		Result businessRules=BusinessRules.run(
+				checkIfJobDescriptionisValid(dto.getJobDescription()),
+				checkIfJobTitleisValid(dto.getJobTitleId()),
+				checkIfCityisValid(dto.getCityId()),
+				checkIfTotalJobTitle(dto.getTotalJobTitle())
+				);
+		if(businessRules!=null)
+			return businessRules;
 		
 		
 		this.jobAdvertisementRepository.save(entity);
 		return new SuccessResult("iş ilanı eklendi");
 	}
+
+
 
 
 	@Override
@@ -95,6 +107,41 @@ public class JobAdvertisementManager implements JobAdvertisementService {
 		return new SuccessResult(employerId+" id numarasına sahip şirket tarafından "+ id+" id li iş ilanı" +(jobAdvertisement.isActive() ? "aktif":"pasif"+ " hale getirildi."));
 	}
 
+	
+
+	private Result checkIfJobDescriptionisValid(String jobDescription) {
+		if(jobDescription==null ||jobDescription=="") {
+			return new ErrorResult("İş tanımı girilmesi zorunludur."); 
+		}
+		return new SuccessResult();
+		
+	}
+	private Result checkIfJobTitleisValid(Long id) {
+		if(id<=0) {
+			return new ErrorResult("İş pozisyonu boş bırakılamaz!");
+		}
+		if(this.jobTitleService.getById(id).getData()==null) {
+			return new ErrorResult("Böyle bir iş pozisyonu yok!");
+		}
+		return new SuccessResult();
+	}
+	
+	private Result checkIfCityisValid(Long cityId) {
+		if(cityId<=0) {
+			return new ErrorResult("Şehir boş bırakılamaz!");
+		}
+		if(this.cityService.getById(cityId).getData()==null) {
+			return new ErrorResult("Böyle bir şehir yok!");
+		}
+		return new SuccessResult();
+	}
+
+	private Result checkIfTotalJobTitle(int totalJobTitle) {
+		if(totalJobTitle<=0) {
+			return new ErrorResult("Açık pozisyon adedi boş bırakılamaz!");
+		}
+		return new SuccessResult();
+	}
 	
 
 }

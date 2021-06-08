@@ -17,27 +17,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class JobAdversementDto {
 	
-	@NotBlank(message ="İş tanımı boş bırakılamaz!")
-	private String jobDescription;
 	
+	private String jobDescription;
 	private double minSalary;
 	private double maxSalary;
 	private boolean isActive;
-	
-	//@NotBlank(message ="Açık pozisyon adedi boş bırakılamaz!")
 	private int totalJobTitle;
-	
 	private Date releaseDate;
 	private Date applicationDeadline;
 	
-	//@NotBlank(message ="Şehir seçimi boş bırakılamaz!")
 	private Long cityId;
-	
-	//@NotBlank(message ="İş veren boş bırakılamaz!")
 	private Long employerId;
-	
-	//@NotBlank(message ="İş pozisyonu boş bırakılamaz!")
-	private int jobTitleId;
+	private Long jobTitleId;
 	
 	
 }
